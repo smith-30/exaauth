@@ -1,0 +1,27 @@
+[Server]
+    Host = "localhost"
+    Port = "1112"
+
+[RDB]
+    Driver = "postgres"
+    User = "pelletier"
+    Password = "mypassword"
+
+[Logger]
+  Development = false
+  Level = "info"
+  Encoding = "json"
+  OutputPaths = ["stdout"]
+  AppErrorOutputPaths = ["stderr", "./err.log"]
+  ErrorOutputPaths = ["stderr"]
+  [Logger.EncoderConfig]
+    MessageKey = "msg"
+    LevelKey = "lvl"
+    TimeKey = "ts"
+    NameKey = "name"
+    CallerKey = "caller"
+    StacktraceKey = "stacktrace"
+    LevelEncoder = ""
+    CallerEncoder = "short"
+
+    

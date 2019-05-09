@@ -1,0 +1,40 @@
+settings:
+  files:
+    outputs:
+      status: false
+      path: ""
+      name: .r.outputs.log
+    logs:
+      status: false
+      path: ""
+      name: .r.logs.log
+    errors:
+      status: false
+      path: ""
+      name: .r.errors.log
+  legacy:
+    force: true
+    interval: 100ms
+schema:
+  - name: exaauth
+    path: .
+    commands: {}
+    watcher:
+      extensions:
+      - go
+      paths:
+      - /
+      ignored_paths:
+      - .git
+      - .realize
+      scripts:
+        - type: after
+          command: make build
+          output: true
+        - type: after
+          command: gometalinter ./... --vendor --disable-all --enable=varcheck --enable=deadcode --enable=vet --enable=ineffassign --enable=structcheck
+          output: true
+        - type: after
+          command: make runner-test
+          output: true
+
