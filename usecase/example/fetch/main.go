@@ -2,9 +2,9 @@ package fetch
 
 import (
 	"github.com/jinzhu/gorm"
-	domain_example "github.com/smith-30/petit/domain/example"
-	"github.com/smith-30/petit/infra/rdb"
-	rdb_example "github.com/smith-30/petit/infra/rdb/example"
+	domain_example "github.com/smith-30/exaauth/domain/example"
+	"github.com/smith-30/exaauth/infra/rdb"
+	rdb_example "github.com/smith-30/exaauth/infra/rdb/example"
 )
 
 type Fetch interface {

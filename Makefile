@@ -18,7 +18,7 @@ RESET=\033[0m
 COLORIZE_PASS=sed ''/PASS/s//$$(printf "$(GREEN)PASS$(RESET)")/''
 COLORIZE_FAIL=sed ''/FAIL/s//$$(printf "$(RED)FAIL$(RESET)")/''
 
-NAME=petitd
+NAME=exaauthd
 
 .PHONY: \
 	runner-test \
@@ -37,4 +37,4 @@ clean-dep:
 	GO111MODULE=on go mod tidy
 
 build:
-	GO111MODULE=on go build -v -ldflags "-X github.com/smith-30/petit/cmd.version=$(VERSION) -X github.com/smith-30/petit/cmd.revision=$(REVISION) -X github.com/smith-30/petit/cmd.appName=$(NAME)" -o build/${GOOS}_${GOARCH}/${NAME} main.go
+	GO111MODULE=on go build -v -ldflags "-X github.com/smith-30/exaauth/cmd.version=$(VERSION) -X github.com/smith-30/exaauth/cmd.revision=$(REVISION) -X github.com/smith-30/exaauth/cmd.appName=$(NAME)" -o build/${GOOS}_${GOARCH}/${NAME} main.go

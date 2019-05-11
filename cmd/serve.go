@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/google/gops/agent"
-	"github.com/smith-30/petit/logger"
-	"github.com/smith-30/petit/server"
-	"github.com/smith-30/petit/server/config"
+	"github.com/smith-30/exaauth/logger"
+	"github.com/smith-30/exaauth/server"
+	"github.com/smith-30/exaauth/server/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -64,6 +64,7 @@ var serveCmd = &cobra.Command{
 
 		s := server.NewServer(
 			server.Address(conf.Server.Host, conf.Server.Port),
+			server.SetAuth(conf.Server.JWTSecret),
 			server.Logger(zl),
 			server.Routes(),
 		)

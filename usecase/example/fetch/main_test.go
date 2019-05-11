@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/smith-30/petit/infra/rdb"
+	"github.com/smith-30/exaauth/infra/rdb"
 
 	"github.com/jinzhu/gorm"
-	domain_example "github.com/smith-30/petit/domain/example"
+	domain_example "github.com/smith-30/exaauth/domain/example"
 )
 
 func TestMain(m *testing.M) {

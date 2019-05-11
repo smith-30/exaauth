@@ -2,7 +2,7 @@ package example
 
 import (
 	"github.com/jinzhu/gorm"
-	domain_example "github.com/smith-30/petit/domain/example"
+	domain_example "github.com/smith-30/exaauth/domain/example"
 )
 
 type articleRepository struct {

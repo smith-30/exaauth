@@ -2,26 +2,28 @@ package server
 
 import (
 	"context"
-	"errors"
+	"fmt"
 	"net/http"
 
 	stats_api "github.com/fukata/golang-stats-api-handler"
 	"github.com/go-chi/chi"
 	chi_middleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
-	"github.com/smith-30/petit/logger"
-	"github.com/smith-30/petit/server/handler/example"
-	"github.com/smith-30/petit/server/middleware"
+	"github.com/smith-30/exaauth/logger"
+	"github.com/smith-30/exaauth/server/handler/example"
+	"github.com/smith-30/exaauth/server/middleware"
 	"go.uber.org/zap"
+
+	"github.com/go-chi/jwtauth"
 )
+
+var TokenAuth *jwtauth.JWTAuth
 
 type Server struct {
 	server *http.Server
 	Logger *logger.Logger
 
 	// serverに連携先を登録できるようにしたい
-
-	// RDB はServerでいいかな？
 }
 
 func NewServer(options ...func(*Server)) *Server {
@@ -44,6 +46,12 @@ func Address(host, port string) func(*Server) {
 			Addr: host + ":" + port,
 		}
 		a.server = s
+	}
+}
+
+func SetAuth(secret string) func(*Server) {
+	return func(a *Server) {
+		TokenAuth = jwtauth.New("HS256", []byte(secret), nil)
 	}
 }
 
@@ -90,16 +98,34 @@ func Routes() func(*Server) {
 		//
 		// your application routing...
 		//
-		r.Route("/api", func(r chi.Router) {
-			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-				panic(errors.New("test"))
+
+		// Protected routes
+		r.Group(func(r chi.Router) {
+			// Seek, verify and validate JWT tokens
+			r.Use(jwtauth.Verifier(TokenAuth))
+
+			// Handle valid / invalid tokens. In this example, we use
+			// the provided authenticator middleware, but you can write your
+			// own very easily, look at the Authenticator method in jwtauth.go
+			// and tweak it, its not scary.
+			r.Use(jwtauth.Authenticator)
+
+			r.Get("/api/admin", func(w http.ResponseWriter, r *http.Request) {
+				_, claims, _ := jwtauth.FromContext(r.Context())
+				w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
 			})
-			r.Get("/auth", example.Auth)
 		})
 
-		// for debug
-		r.Route("/debug", func(r chi.Router) {
-			r.Get("/stats", stats_api.Handler)
+		// Public routes
+		r.Group(func(r chi.Router) {
+			r.Route("/api", func(r chi.Router) {
+				r.Post("/auth", example.New(TokenAuth).Auth)
+			})
+
+			// for debug
+			r.Route("/debug", func(r chi.Router) {
+				r.Get("/stats", stats_api.Handler)
+			})
 		})
 
 		a.server.Handler = r

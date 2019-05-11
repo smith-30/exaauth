@@ -15,8 +15,9 @@ type RDB struct {
 }
 
 type Server struct {
-	Host string
-	Port string
+	Host      string
+	Port      string
+	JWTSecret string
 }
 
 type Logger struct {

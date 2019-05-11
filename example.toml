@@ -1,6 +1,7 @@
 [Server]
     Host = "localhost"
     Port = "1112"
+    JWTSecret = "zK-PbX9idyU"
 
 [RDB]
     Driver = "postgres"

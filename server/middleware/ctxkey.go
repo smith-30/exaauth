@@ -10,5 +10,5 @@ type contextKey struct {
 }
 
 func (k *contextKey) String() string {
-	return "petit/middleware context value " + k.name
+	return "petit/middleware ctx val " + k.name
 }

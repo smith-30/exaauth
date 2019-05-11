@@ -6,7 +6,7 @@ import (
 	"time"
 
 	chi_middleware "github.com/go-chi/chi/middleware"
-	"github.com/smith-30/petit/logger"
+	"github.com/smith-30/exaauth/logger"
 	"go.uber.org/zap"
 )
 
