@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	stats_api "github.com/fukata/golang-stats-api-handler"
@@ -12,6 +11,7 @@ import (
 	"github.com/smith-30/exaauth/logger"
 	"github.com/smith-30/exaauth/server/handler/example"
 	"github.com/smith-30/exaauth/server/middleware"
+	"github.com/smith-30/exaauth/server/response"
 	"go.uber.org/zap"
 
 	"github.com/go-chi/jwtauth"
@@ -112,7 +112,7 @@ func Routes() func(*Server) {
 
 			r.Get("/api/admin", func(w http.ResponseWriter, r *http.Request) {
 				_, claims, _ := jwtauth.FromContext(r.Context())
-				w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
+				response.Json(w, 200, &response.User{ID: claims["user_id"]})
 			})
 		})
 
